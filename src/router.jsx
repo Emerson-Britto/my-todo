@@ -1,6 +1,7 @@
 import React/*, { useState, useEffect }*/ from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { AccessFormProvider } from 'common/contexts/accessForm';
+import { ToDoProvider } from 'common/contexts/toDo';
 import { AccessForm, ToDo } from 'pages';
 
 const AppRoutes = () => {
@@ -12,9 +13,11 @@ const AppRoutes = () => {
 			    <Route exact={true} path='/' element={<AccessForm/>}/>
 			  </Routes>
 			</AccessFormProvider>
-			<Routes>
-		    <Route path='/app/:category' element={<ToDo/>}/>
-		  </Routes>
+			<ToDoProvider>
+				<Routes>
+			    <Route path='/app/:category' element={<ToDo/>}/>
+			  </Routes>
+		  </ToDoProvider>
 		</BrowserRouter>
 	);
 }

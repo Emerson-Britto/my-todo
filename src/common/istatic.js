@@ -12,8 +12,8 @@ class Istatic {
 		return `${baseUrl}/static/icons/${name}_${color}_${dp}dp.${format}`;
 	}
 
-	static path(pathName) {
-		return baseUrl + pathName;
+	static staticPath(pathName) {
+		return baseUrl + '/static/' + pathName;
 	}
 }
 

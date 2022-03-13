@@ -1,0 +1,8 @@
+{
+    "mysql": {
+        "connectionString": "mysql://jvmpko6m1iidzob4:jsm1wkkrv6wkvg6y@m7az7525jg6ygibs.cbetxkdyhwsb.us-east-1.rds.amazonaws.com:3306/wl0cs0ndsp3iyc6z"
+    },
+    "api": {
+        "port": 1234
+    }
+}

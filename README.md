@@ -2,8 +2,11 @@
 
 O projeto está divido em duas partes (back/front end), ambos iniciando com 'npm start';
 
-Back-end: ~85% completo: emplementaria um sistema usando refleshToken, testes com jest, etc...
-front-end: 75%: completo: falta o redirecionamento das paginas, e os request para API, + alguns ajustes básicos; 
+# Back-end: ~85% completo: emplementaria um sistema usando refleshToken, testes com jest, etc...
+
+# front-end: 75%: completo: falta o redirecionamento das paginas, e os request para API, + alguns ajustes básicos;
+route '/': access form;
+route '/app/inbox': aplicação toDo; 
 
 ## Available Scripts
 

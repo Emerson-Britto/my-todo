@@ -66,6 +66,8 @@ const SignUpForm = () => {
     resolver: yupResolver(signUpSchema),
   });
 
+  // .push('/app/inbox');
+
   const onError = err => {
   	console.error(err);
   };

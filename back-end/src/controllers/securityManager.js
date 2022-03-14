@@ -18,6 +18,7 @@ module.exports = {
     },
 
     async createAccessToken({ mail }, deviceData) {
+        console.log(mail);
         const payload = {
             mail: mail
         };
@@ -37,7 +38,7 @@ module.exports = {
         if (!mail) {
             throw new InvalidArgumentError('mail is required!');
         }
-        let code = Math.floor(Math.random() * (max - min) + min);
+        let code = Math.floor(Math.random() * (max - min) + min); // ex: 453785
         await redisDB.set(mail, code);
         const expireat = moment().add(temp, 'm').unix();
         redisDB.expiresAt(mail, expireat);
@@ -72,10 +73,23 @@ module.exports = {
         return jwt.verify(token, KEY);
     },
 
+    isActiveToken(token) {
+        return !!redisDB.exists(token);
+    },
+
     async verifyAccessToken(token) {
-        const result = await redisDB.exists(token);
-        if (result === 1) return this.decoderToken(token);
+        const isActive = await this.isActiveToken(token)
+        if (isActive) return this.decoderToken(token);
         throw new InvalidArgumentError('invalid token!');
+    },
+
+    async isAuthorized(req, res, next) {
+        const { authorization=null } = req.headers;
+        if (!authorization) return res.status(401).send();
+        const tokenData = await this.verifyAccessToken(authorization.replace(/^Bearer\s/i, ''));
+        if (!tokenData) return res.status(401).send();
+        req.userMail = tokenData.mail;
+        next();
     },
 
     async revokeInvalidDevices(accountDevices) {

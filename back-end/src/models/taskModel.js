@@ -1,14 +1,11 @@
-const Sequelize = require('sequelize')
-const instance = require('../dataBase')
+const Sequelize = require('sequelize');
+const instance = require('../dataBase');
+const Accounts = require('./accountModel');
 
-const columns = {
+const Tasks = instance.define('task', {
   userMail: {
-    type: Sequelize.INTEGER,
+    type: Sequelize.STRING,
     allowNull: false,
-    references: {
-      model: 'accounts', // 'accounts' refers to table name
-      key: 'mail' // 'id' refers to column name in accounts table
-    }
   },
   title: {
     type: Sequelize.STRING,
@@ -34,19 +31,13 @@ const columns = {
     type: Sequelize.STRING,
     allowNull: false
   }
-}
+})
 
-const options = {
-  freezeTableName: true,
-  tableName: 'tasks',
-  timestamps: true,
-}
-
-const Tasks = instance.define('task', columns, options);
-Tasks.associate = function(models) {
-  Tasks.belongsTo(models.accounts, {
-    foreignKey: 'userMail'
-  })
-};
-
+Tasks.belongsTo(Accounts, {
+  constraint: true,
+  foreignKey: 'accountId'
+})
+Accounts.hasMany(Tasks, {
+  foreignKey: 'accountId'
+})
 module.exports = Tasks;

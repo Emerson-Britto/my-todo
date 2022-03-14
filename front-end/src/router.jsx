@@ -7,7 +7,7 @@ import { AccessForm, ToDo } from 'pages';
 const AppRoutes = () => {
 
 	return (
-		<BrowserRouter>
+		<BrowserRouter >
 			<AccessFormProvider>
 			  <Routes>
 			    <Route exact={true} path='/' element={<AccessForm/>}/>

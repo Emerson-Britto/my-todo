@@ -24,13 +24,13 @@ module.exports = {
         return false;
     },
 
-    async setDevice({ id, displayName }, deviceData) {
+    async setDevice({ id, mail }, deviceData) {
         try {
             const account = await Model.findOne({ where: {id: Number(id)} });
             let currentDevices = JSON.parse(account.devices);
 
             const accessToken = await securityManager.createAccessToken(
-                { id, displayName },
+                { mail },
                 deviceData
             );
             let devices = JSON.stringify([ ...currentDevices, accessToken ]);
@@ -99,17 +99,13 @@ module.exports = {
 
     async getById(id) {
         const account = await Model.findOne({ where: {id: Number(id)} });
-
         if(account) return account;
-
         throw new InvalidArgumentError('No Found data with this Id!');
     },
 
     async getByMail(mail) {
-        const account = await Model.findOne({ where: {mail: mail} });
-
+        const account = await Model.findOne({ where: { mail: mail }});
         if(account) return account;
-
         throw new InvalidArgumentError('No Found data with this mail!');
     },
 

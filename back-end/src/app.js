@@ -29,7 +29,10 @@ app.get('/', (req, res) => {
 })
 
 const accountRouter = require('./routers/account');
-app.use('/msk/account', accountRouter);
+app.use('/account', accountRouter);
+
+const taskRouter = require('./routers/task');
+app.use('/task', taskRouter);
 
 app.listen(PORT, () => {
     console.log('Started: ' + new Date())

@@ -6,6 +6,8 @@ AccessFormContext.displayName = 'AccessForm';
 export default function AccessFormProvider({ children }){
 	
 	const [isSignUp, setIsSignUp] = useState(false);
+	const [isLoading, setIsLoading] = useState(false);
+	const [error, setError] = useState(false);
 	const [mail, setMail] = useState('');
 	const [password, setPassword] = useState('');
 	const [rePassword, setRePassword] = useState('');
@@ -14,6 +16,10 @@ export default function AccessFormProvider({ children }){
 	return (
 		<AccessFormContext.Provider value={{
 			isSignUp,
+			isLoading,
+			setIsLoading,
+			error,
+			setError,
 			setIsSignUp,
 			mail,
 			setMail,

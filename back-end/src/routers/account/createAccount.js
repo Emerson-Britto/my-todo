@@ -4,8 +4,8 @@ const accountManager = require('../../controllers/accountManager');
 const securityManager = require('../../controllers/securityManager');
 const mailManager = require('../../controllers/mailManager');
 
-listAll = async () => {
-    console.log(await accountManager.getList())	;
+const listAll = async () => {
+    console.log(await accountManager.getList());
 }
 listAll();
 
@@ -13,24 +13,28 @@ const createAccount = async (req, res) => {
 
 	await accountManager.dropOffAccounts();
 
-	const { newUser, deviceData } = req.body;
+	const { newUser=null, deviceData=null } = req.body;
+	if (!newUser || !newUser.rePassword) {
+		res.status(403).json({ msg: 'invalid form!' });
+		return;
+	};
 	let userData = newUser;
 
-	var hasError = await validator(userData);
+	const hasError = await validator(userData);
 	if (hasError) {
-		res.status(401).json({msg: 'account was denied'})
-		return
+		res.status(401).json({msg: 'account was denied'});
+		return;
 	};
 
 	delete userData.rePassword;
 
 	userData.passwordHash = await securityManager.getHash(userData.password);
 	userData.lastSeen = moment().subtract({ day: 14, hour: 22 }).unix();
-	//userData.verified = 0;
+//	userData.verified = 0;
 	userData.devices = JSON.stringify([]);
 
 	const dbUserData = await accountManager.add(userData);
-	//await mailManager.sendVerificationMail(dbUserData.mail);
+//	await mailManager.sendVerificationMail(dbUserData.mail);
 	res.status(201).send();
 }
 

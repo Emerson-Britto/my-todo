@@ -13,7 +13,7 @@ const createFastToken = async(req, res) => {
 		const hasSomeAuthorization = authorizedServices
 			.some(service => service.test(ShortCutUrl.normalizeUrl(afterUrl)));
 
-		if (!hasSomeAuthorization) throw new InvalidService('invalid service!');
+		if (!hasSomeAuthorization) throw new InvalidService('unauthorized service!');
 
 		await securityManager.verifyAccessToken(accessToken);
 		let key = faker.datatype.uuid() + '-tmpKey-' + faker.datatype.uuid();

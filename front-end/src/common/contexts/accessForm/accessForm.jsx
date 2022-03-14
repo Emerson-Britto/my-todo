@@ -1,11 +1,16 @@
 import { useContext } from 'react';
 import * as yup from 'yup';
+import { request } from 'common/request';
 import { AccessFormContext } from './accessForm-provider';
 
 export function useAccessFormContext(){
 
 	const {
 		isSignUp,
+		isLoading,
+		setIsLoading,
+		error,
+		setError,
 		setIsSignUp,
 		mail,
 		setMail,
@@ -52,8 +57,19 @@ export function useAccessFormContext(){
 		setIsSignUp(current => !current);
 	};
 
-	const onSubmit = data => {
-		console.log({ data });
+// sem redirecionamento;
+	const onSubmit = async(data) => {
+//		setIsLoading(true);
+		if (isSignUp) {
+			await request.SignUp(data)
+				.then(r => {
+				})
+				.catch(err => {
+					console.log(err);
+					setError(true);
+				});
+		}
+		return await request.login(data);
 	};
 
 	return {

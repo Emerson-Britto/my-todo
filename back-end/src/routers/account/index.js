@@ -1,6 +1,5 @@
 const router = require('express').Router();
 const passport = require('passport');
-
 //const dataAlreadyExists = require('./dataAlreadyExists');
 const createAccount = require('./createAccount');
 const accessAccount = require('./accessAccount');
@@ -10,12 +9,11 @@ const accessAccount = require('./accessAccount');
 //const accountData = require('./accountData');
 const authenticatonMiddlewares = require('./authenticationMiddlewares');
 
-
 router.options('/', (req, res) => {
-    res.set('Access-Control-Allow-Methods', 'GET, POST');
-    res.set('Access-Control-Allow-Headers', 'Content-Type');
-    res.status(200);
-    res.end();
+  res.set('Access-Control-Allow-Methods', 'GET, POST');
+  res.set('Access-Control-Allow-Headers', 'Content-Type');
+  res.status(200);
+  res.end();
 })
 
 //router
@@ -39,12 +37,12 @@ router.options('/', (req, res) => {
 //    .get(accessFastToken)
 
 router
-    .route('/create')
-    .post(createAccount)
+  .route('/create')
+  .post(createAccount)
 
 router
-    .route('/login')
-    .post(authenticatonMiddlewares.local, accessAccount)
+  .route('/login')
+  .post(authenticatonMiddlewares.local, accessAccount)
 
 
 module.exports = router;

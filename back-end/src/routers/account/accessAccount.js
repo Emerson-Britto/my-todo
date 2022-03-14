@@ -18,6 +18,8 @@ const accessAccount = async(req, res) => {
 	let lastSeenUpdated = moment().unix();
 	await accountManager.update(account, { activeDevices, lastSeenUpdated });
 
+	console.log({account});
+
 	let accessToken = await accountManager.setDevice(account, deviceData);
 
 	// também pode ser enviado pelo Header do request;

@@ -24,6 +24,11 @@ O projeto está divido em duas partes (back/front end), ambos iniciando com 'npm
 `route '/app/today'`: exibe todos os toDo do dia;
 `route '/app/tomorrow'`: exibe todos os toDos do dia seguinte;
 
+Já existe uma conta criada:
+
+**mail**: emersonb987@gmail.com
+**password**: #A3hjkk%vb89#
+
 ## Available Scripts
 
 In the project directory, you can run:

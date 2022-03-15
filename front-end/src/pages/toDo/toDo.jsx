@@ -1,6 +1,7 @@
 import React/*, { useState, useEffect }*/ from 'react';
 import Styled from 'styled-components';
-import { Link, Routes, Route } from "react-router-dom";
+import { DataStorage } from 'common/storage';
+import { Link, Routes, Route, Navigate } from "react-router-dom";
 import { Header, Action, Today, Inbox, Tomorrow } from 'components';
 import Istatic from 'common/istatic';
 
@@ -37,8 +38,20 @@ const Option = Styled(Link)`
 const Label = Styled.p`
 	//styles..
 `
+const ErrorLog = Styled.h1`
+	display: ${(props) => (props.show ? "" : "none")};
+	text-align: center;
+	padding: 10px 20px;
+  border: 2px solid #830000;
+  border-radius: 8px;
+  background-color: #0f0000;
+`
 
 const ToDo = () => {
+	const auth = DataStorage.hasToken();
+	if (!auth) {
+		return <Navigate to="/" replace/>;
+	}
 
 	return (
 		<ViewPort>

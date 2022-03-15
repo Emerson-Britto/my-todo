@@ -7,6 +7,7 @@ import { useToDoContext } from 'common/contexts/toDo';
 const View = Styled.section`
 	display: flex;
 	flex-direction: column;
+	width: 100%;
 `
 const TaskEditor = Styled.section`
 	display: flex;
@@ -89,14 +90,14 @@ const AddTaskInline = ({onSave, onClose, edit}) => {
 
 	const saveTask = () => {
 		if (!taskTitle) return;
-		const labels = taskLabel.split(/,\s|,/ig);
+		const labels = taskLabel.replace(/,\s|,/ig, ', ');
 		if (edit) {
 			onSave({
 				...edit,
 				editing: false,
 				title: taskTitle,
 				desc: taskDesc,
-				labels: labels[0].length? labels : [],
+				labels: labels,
 				due: date || null
 			});
 			clearFields();
@@ -106,7 +107,7 @@ const AddTaskInline = ({onSave, onClose, edit}) => {
 			checked: false,
 			title: taskTitle,
 			desc: taskDesc,
-			labels: labels[0].length? labels : [],
+			labels: labels,
 			due: date || null
 		});
 		clearFields();
@@ -116,7 +117,7 @@ const AddTaskInline = ({onSave, onClose, edit}) => {
 	  if (edit) {
 	  	setTaskTitle(edit.title);
 			setTaskDesc(edit.desc);
-			setTaskLabel(edit.labels.join(', '));
+			setTaskLabel(edit.labels);
 			setDate(edit.due || '');
 	  }
 	},[])

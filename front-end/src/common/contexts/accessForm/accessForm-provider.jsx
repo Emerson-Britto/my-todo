@@ -7,7 +7,7 @@ export default function AccessFormProvider({ children }){
 	
 	const [isSignUp, setIsSignUp] = useState(false);
 	const [isLoading, setIsLoading] = useState(false);
-	const [error, setError] = useState(false);
+	const [requestFailed, setRequestFailed] = useState('');
 	const [mail, setMail] = useState('');
 	const [password, setPassword] = useState('');
 	const [rePassword, setRePassword] = useState('');
@@ -18,8 +18,8 @@ export default function AccessFormProvider({ children }){
 			isSignUp,
 			isLoading,
 			setIsLoading,
-			error,
-			setError,
+			requestFailed,
+			setRequestFailed,
 			setIsSignUp,
 			mail,
 			setMail,

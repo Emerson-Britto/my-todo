@@ -22,7 +22,7 @@ passport.use(
 
                 done(null, account);
             } catch (error) {
-                console.error(error);
+                console.error({error});
                 done({ name: "InvalidArgumentError", msg: "invalid mail or password" });
             }
         }

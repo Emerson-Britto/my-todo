@@ -1,7 +1,11 @@
-import React/*, { useState, useEffect }*/ from 'react';
+import React, { useEffect } from 'react';
+import { useNavigate } from "react-router-dom";
 import { useAccessFormContext } from 'common/contexts/accessForm';
 import Styled from 'styled-components';
+import { Navigate } from 'react-router-dom';
+import Istatic from 'common/istatic';
 import { FormWrapper, SignUpForm, InputError } from 'components';
+import { DataStorage } from 'common/storage';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 
@@ -35,6 +39,7 @@ const DataInput = Styled.input`
 	}
 `
 const SubmitBtn = Styled.button`
+	display: ${(props) => (props.show ? "" : "none")};
   margin: 20px 0;
   border: none;
   cursor: pointer;
@@ -49,9 +54,29 @@ const SubmitBtn = Styled.button`
 	  color: #000;
 	}
 `
+const Loading = Styled.img`
+	display: ${(props) => (props.show ? "" : "none")};
+	width: 30px;
+	margin: 20px auto;
+`
+const ErrorLog = Styled.h1`
+	display: ${(props) => (props.show ? "" : "none")};
+	text-align: center;
+	padding: 10px 20px;
+  border: 2px solid #830000;
+  border-radius: 8px;
+  background-color: #0f0000;
+`
 
 const AccessForm = (props) => {
-	const { isSignUp, logInSchema, onSubmit } = useAccessFormContext();
+	const auth = DataStorage.hasToken();
+	const {
+		isSignUp,
+		logInSchema,
+		onSubmit,
+		requestFailed,
+		isLoading
+	} = useAccessFormContext();
 
   const {
     register,
@@ -70,6 +95,10 @@ const AccessForm = (props) => {
   const onError = err => {
   	console.error(err);
   };
+
+  if (auth) {
+  	return <Navigate to="/app/inbox" replace />;
+  }
 
 	if (isSignUp) {
 		return(
@@ -99,8 +128,16 @@ const AccessForm = (props) => {
 					/>
 					{errors?.password?.message && <InputError errMsg={errors.password.message}/>}
 				</InputField>
-				<SubmitBtn>Log In</SubmitBtn>
+				<SubmitBtn show={!isLoading}>Log In</SubmitBtn>
+				<Loading
+					show={isLoading}
+					src={Istatic.animatedSvgUrl('loading-jump_black')}
+					alt='loading'
+				/>
 			</Form>
+	    <ErrorLog show={requestFailed}>
+	    	{requestFailed}
+	    </ErrorLog>
 		</FormWrapper>
 	);
 }

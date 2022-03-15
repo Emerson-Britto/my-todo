@@ -12,7 +12,7 @@ export class DataStorage {
 
   static get(key) {
     if (typeof window !== 'undefined') {
-      const data: any = localStorage.getItem(key);
+      const data = localStorage.getItem(key);
       return JSON.parse(data);
     }
     return false;
@@ -43,9 +43,13 @@ export class DataStorage {
     return false;
   }
 
+  static delToken() {
+    localStorage.removeItem(tokenSlotName);
+  }
+
   static getToken() {
     if (typeof window !== 'undefined') {
-      const data: any = localStorage.getItem(tokenSlotName);
+      const data = localStorage.getItem(tokenSlotName);
       return JSON.parse(data);
     }
     return '';

@@ -1,6 +1,7 @@
 import React/*, { useState, useEffect }*/ from 'react';
 import Styled from 'styled-components';
 import { useAccessFormContext } from 'common/contexts/accessForm';
+import Istatic from 'common/istatic';
 import { FormWrapper, InputError } from 'components';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -34,6 +35,7 @@ const DataInput = Styled.input`
 	}
 `
 const SubmitBtn = Styled.button`
+	display: ${(props) => (props.show ? "" : "none")};
   margin: 20px 0;
   border: none;
   cursor: pointer;
@@ -48,9 +50,28 @@ const SubmitBtn = Styled.button`
 	  color: #000;
 	}
 `
+const Loading = Styled.img`
+	display: ${(props) => (props.show ? "" : "none")};
+	width: 30px;
+	margin: 20px auto;
+`
+const ErrorLog = Styled.h1`
+	display: ${(props) => (props.show ? "" : "none")};
+	text-align: center;
+	padding: 10px 20px;
+  border: 2px solid #830000;
+  border-radius: 8px;
+  background-color: #0f0000;
+`
 
 const SignUpForm = () => {
-	const { signUpSchema, onSubmit } = useAccessFormContext();
+	const {
+		passwordForm,
+		signUpSchema,
+		onSubmit,
+		requestFailed,
+		isLoading
+	} = useAccessFormContext();
   const {
     register,
     handleSubmit,
@@ -65,8 +86,6 @@ const SignUpForm = () => {
     },
     resolver: yupResolver(signUpSchema),
   });
-
-  // .push('/app/inbox');
 
   const onError = err => {
   	console.error(err);
@@ -91,6 +110,7 @@ const SignUpForm = () => {
 						id='input:password'
 						type='password'
 						{...register('password')}
+						onChange={e => passwordForm.setPassword(e.target.value)}
 					/>
 					{errors?.password?.message && <InputError errMsg={errors.password.message}/>}
 				</InputField>
@@ -100,10 +120,19 @@ const SignUpForm = () => {
 						id='input:password'
 						type='password'
 						{...register('rePassword')}
+						onChange={e => passwordForm.setRePassword(e.target.value)}
 					/>
 					{errors?.rePassword?.message && <InputError errMsg={errors.rePassword.message}/>}
 				</InputField>
-				<SubmitBtn>Sign Up</SubmitBtn>
+				<SubmitBtn show={!isLoading}>Sign Up</SubmitBtn>
+				<Loading
+					show={isLoading}
+					src={Istatic.animatedSvgUrl('loading-jump_black')}
+					alt='loading'
+				/>
+		    <ErrorLog show={requestFailed}>
+		    	{requestFailed}
+		    </ErrorLog>
 			</Form>
 		</FormWrapper>
 	);

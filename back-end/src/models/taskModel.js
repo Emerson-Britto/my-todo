@@ -13,7 +13,7 @@ const Tasks = instance.define('task', {
   },
   description: {
     type: Sequelize.STRING,
-    allowNull: false
+    allowNull: true
   },
   labels: {
     type: Sequelize.STRING,
@@ -25,7 +25,7 @@ const Tasks = instance.define('task', {
   },
   due: {
     type: Sequelize.STRING,
-    allowNull: false
+    allowNull: true
   },
   createAt: {
     type: Sequelize.STRING,

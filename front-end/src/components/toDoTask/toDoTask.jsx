@@ -2,6 +2,7 @@ import React/*, { useState, useEffect }*/ from 'react';
 import Styled from 'styled-components';
 import Istatic from 'common/istatic';
 import { Action } from 'components';
+import { useToDoContext } from 'common/contexts/toDo';
 
 const View = Styled.section`
 	display: flex;
@@ -30,6 +31,7 @@ const CheckBox = Styled.div`
 	`)}
 `
 const TaskInfors = Styled.section`
+	width: 86%;
 `
 const TaskTitle = Styled.h3`
 	margin: 10px 0;
@@ -56,6 +58,7 @@ const LabelName = Styled.p`
 `
 
 const ToDoTask = ({ data, onCheck, onClick }) => {
+	const { deleteTask } = useToDoContext();
 
 	return (
 		<View onClick={onClick} disable={data.checked}>
@@ -78,9 +81,9 @@ const ToDoTask = ({ data, onCheck, onClick }) => {
 				<TaskTitle>{data.title}</TaskTitle>
 				<TaskDesc>{data.desc}</TaskDesc>
 				<TaskLabels ifHasLabel={!!data.labels.length}>
-					{data.labels.map((label, i) => {
+					{data.labels.split(/,\s|,/ig).map((label, i) => {
 						return (
-							<Label key={label.name + i}>
+							<Label key={label + i}>
 								<Action
 									size='15px'
 									margin='0 3px 0 0'
@@ -93,6 +96,15 @@ const ToDoTask = ({ data, onCheck, onClick }) => {
 					})}
 				</TaskLabels>
 			</TaskInfors>
+			<Action
+				onClick={(e) => {
+					e.stopPropagation();
+					deleteTask(data);
+				}}
+				padding='8px'
+				src={Istatic.iconUrl('delete')}
+				alt='delete task'
+			/>
 		</View>
 	);
 }

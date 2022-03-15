@@ -11,14 +11,12 @@ const accessAccount = async(req, res) => {
 	//if(!account.verified) {
 	//	await mailManager.sendVerificationMail(account.mail);
 	//	res.status(428).json({ msg: 'account needs to be verified'});
-	//	return
+	//	return;
 	//}
 
 	let activeDevices = await securityManager.revokeInvalidDevices(account.devices);
 	let lastSeenUpdated = moment().unix();
 	await accountManager.update(account, { activeDevices, lastSeenUpdated });
-
-	console.log({account});
 
 	let accessToken = await accountManager.setDevice(account, deviceData);
 

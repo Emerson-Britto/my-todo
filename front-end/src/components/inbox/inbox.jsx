@@ -13,6 +13,9 @@ const ViewWrapper = Styled.section`
 	overflow: scroll;
 `
 const View = Styled.section`
+	display: flex;
+	flex-direction: column;
+	align-items: center;
 	font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
 	width: 80%;
 `
@@ -20,6 +23,7 @@ const InboxHeader = Styled.section`
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
+	width: 100%;
 `
 const Title = Styled.h1`
 	font-weight: bold;
@@ -39,9 +43,14 @@ const AddTaskBtn = Styled.button`
 		color: #1571C4;
 	}
 `
+const Loading = Styled.img`
+	display: ${(props) => (props.show ? "" : "none")};
+	width: 30px;
+	margin: 20px auto;
+`
 
 const Inbox = () => {
-	const { toggleActiveEditor } = useToDoContext();
+	const { toggleActiveEditor, isLoading } = useToDoContext();
 
 	return (
 		<ViewWrapper>
@@ -54,6 +63,11 @@ const Inbox = () => {
 					</AddTaskBtn>
 				</InboxHeader>
 				<TaskViewWrapper/>
+				<Loading
+					show={isLoading}
+					src={Istatic.animatedSvgUrl('loading-jump_black')}
+					alt='loading'
+				/>
 			</View>
 		</ViewWrapper>
 	);

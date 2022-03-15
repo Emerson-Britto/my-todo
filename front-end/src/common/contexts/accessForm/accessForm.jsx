@@ -1,5 +1,7 @@
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import * as yup from 'yup';
+import { useNavigate } from "react-router-dom";
+import { DataStorage } from 'common/storage';
 import { request } from 'common/request';
 import { AccessFormContext } from './accessForm-provider';
 
@@ -9,16 +11,15 @@ export function useAccessFormContext(){
 		isSignUp,
 		isLoading,
 		setIsLoading,
-		error,
-		setError,
+		requestFailed,
+		setRequestFailed,
 		setIsSignUp,
-		mail,
-		setMail,
 		password,
 		setPassword,
 		rePassword,
 		setRePassword
 	} = useContext(AccessFormContext);
+	const navigate = useNavigate();
 
 
 // =============================================================
@@ -57,26 +58,40 @@ export function useAccessFormContext(){
 		setIsSignUp(current => !current);
 	};
 
-// sem redirecionamento;
 	const onSubmit = async(data) => {
-//		setIsLoading(true);
-		if (isSignUp) {
-			await request.SignUp(data)
-				.then(r => {
-				})
-				.catch(err => {
-					console.log(err);
-					setError(true);
-				});
+		setIsLoading(true);
+		try {
+			if (isSignUp) {
+				await request.SignUp(data)
+			}
+			const res = await request.login(data)
+			if (res.status === 200) {
+				setIsLoading(false);
+				navigate('/app/inbox');
+			}
+		} catch(err) {
+			console.error(err.response.data.error.msg);
+			setRequestFailed(err.response.data.error.msg);
 		}
-		return await request.login(data);
+		setIsLoading(false);
 	};
+
+	useEffect(()=>{
+		setTimeout(()=> {setRequestFailed('')} , 6000);
+	},[requestFailed]);
 
 	return {
 		signUpSchema,
 		logInSchema,
 		isSignUp,
 		changeForm,
-		onSubmit
+		onSubmit,
+		requestFailed,
+		isLoading
 	}
 }
+
+//{
+//  "mail": "emersonb987@gmail.com",
+//  "password": "#A3hjkk%vb89#"
+//}

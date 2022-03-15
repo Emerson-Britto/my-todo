@@ -2,6 +2,7 @@ import React/*, { useState, useEffect }*/ from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { AccessFormProvider } from 'common/contexts/accessForm';
 import { ToDoProvider } from 'common/contexts/toDo';
+import { RequireAuth } from 'components';
 import { AccessForm, ToDo } from 'pages';
 
 const AppRoutes = () => {

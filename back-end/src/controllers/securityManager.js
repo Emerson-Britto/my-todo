@@ -74,22 +74,27 @@ module.exports = {
     },
 
     isActiveToken(token) {
-        return !!redisDB.exists(token);
+        return redisDB.exists(token);
     },
 
     async verifyAccessToken(token) {
-        const isActive = await this.isActiveToken(token)
-        if (isActive) return this.decoderToken(token);
+        const isActive = await this.isActiveToken(token);
+        if (isActive != 0) return this.decoderToken(token);
         throw new InvalidArgumentError('invalid token!');
     },
 
     async isAuthorized(req, res, next) {
-        const { authorization=null } = req.headers;
-        if (!authorization) return res.status(401).send();
-        const tokenData = await this.verifyAccessToken(authorization.replace(/^Bearer\s/i, ''));
-        if (!tokenData) return res.status(401).send();
-        req.userMail = tokenData.mail;
-        next();
+        try {
+            const { authorization=null } = req.headers;
+            const tokenData = await this.verifyAccessToken(
+                authorization.replace(/^Bearer\s/i, '')
+            );
+            req.userMail = tokenData.mail;
+            next();
+        } catch(err) {
+            console.error(err);
+            res.status(401).send();
+        }
     },
 
     async revokeInvalidDevices(accountDevices) {

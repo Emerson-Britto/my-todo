@@ -100,9 +100,12 @@ module.exports = {
     async revokeInvalidDevices(accountDevices) {
         let devices = JSON.parse(accountDevices);
         devices = await devices.filter(async(device) => await redisDB.exists(device));
-        if (devices.length > 4) {
+        console.log(devices.length);
+        while (devices.length > 4) {
+            console.log(devices.length);
             await this.deleteToken(devices.shift());
         }
+        console.log(devices.length);
         //for(let i=0; i < devices.length; i++) {
         //    let device = devices[i];
         //    const result = await redisDB.exists(device);

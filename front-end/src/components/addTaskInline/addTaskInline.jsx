@@ -74,7 +74,7 @@ const TaskEditorActionBtn = Styled(DefaultButtonStyles)`
 	//styles..
 `
 
-const AddTaskInline = ({onSave, onClose, edit}) => {
+const AddTaskInline = ({ onSave, onClose, edit }) => {
 	const { updateTask } = useToDoContext();
 	const [taskTitle, setTaskTitle] = useState('');
 	const [taskDesc, setTaskDesc] = useState('');

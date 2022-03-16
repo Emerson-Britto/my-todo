@@ -101,7 +101,7 @@ module.exports = {
         let devices = JSON.parse(accountDevices);
         devices = await devices.filter(async(device) => await redisDB.exists(device));
         if (devices.length > 4) {
-            await this.deleteToken(devices.pop());
+            await this.deleteToken(devices.shift());
         }
         //for(let i=0; i < devices.length; i++) {
         //    let device = devices[i];

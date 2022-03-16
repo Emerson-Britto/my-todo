@@ -46,6 +46,7 @@ const TaskViewWrapper = ({ filterBy }) => {
 							edit={toDo}
 							onSave={addTask}
 							onClose={()=> toggleActiveEditor(false)}
+							key={toDo.id + i}
 						/>
 					);
 				}
@@ -54,7 +55,7 @@ const TaskViewWrapper = ({ filterBy }) => {
 						onCheck={updateTask}
 						onClick={()=> editTask(toDo)}
 						data={toDo}
-						key={toDo.id}
+						key={toDo.id + i}
 					/>
 				);
 			})}

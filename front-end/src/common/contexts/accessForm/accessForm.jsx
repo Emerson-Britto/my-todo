@@ -37,8 +37,8 @@ export function useAccessFormContext(){
 	    .min(8),
 	  rePassword: yup
 	    .string()
+	    .oneOf([yup.ref('password'), null], 'Passwords must match')
 	    .required()
-	    .matches(password, "password no matches")
 	    .min(8)
 	});
 
@@ -62,7 +62,7 @@ export function useAccessFormContext(){
 		setIsLoading(true);
 		try {
 			if (isSignUp) {
-				await request.SignUp(data)
+				await request.SignUp({newUser: data})
 			}
 			const res = await request.login(data)
 			if (res.status === 200) {
@@ -72,8 +72,9 @@ export function useAccessFormContext(){
 		} catch(err) {
 			console.error(err.response.data.error.msg);
 			setRequestFailed(err.response.data.error.msg);
+		} finally {
+			setIsLoading(false);
 		}
-		setIsLoading(false);
 	};
 
 	useEffect(()=>{

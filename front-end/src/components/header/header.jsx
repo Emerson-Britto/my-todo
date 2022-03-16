@@ -1,6 +1,8 @@
-import React/*, { useState, useEffect }*/ from 'react';
+import React, { useState } from 'react';
 import Styled from 'styled-components';
 import Istatic from 'common/istatic';
+import { useNavigate } from "react-router-dom";
+import { DataStorage } from 'common/storage';
 import { Action } from 'components';
 
 const View = Styled.header`
@@ -32,18 +34,36 @@ const SearchInput = Styled.input`
 	background-color: #0A0E25;
 `
 const RightSide = Styled.div`
+	position: relative;
 	display: flex;
 	justify-content: flex-end;
 	align-items: center;
 `
 const ProfileImg = Styled.img`
 	border-radius: 50%;
+	border: ${(props) => (props.activeLogoutPopUp ? "1px" : "0")} solid #830000;
 	width: 35px;
 	margin: 0 40px 0 15px;
 	cursor: pointer;
 `
+const LogOutBtn = Styled.button`
+	display: ${(props) => (props.show ? "" : "none")};
+	position: absolute;
+	right: 40px;
+	bottom: -30px;
+	color: #fff;
+	width: 120px;
+	padding: 5px 15px;
+	font-size: 0.9em;
+  border: 2px solid #830000;
+  border-radius: 8px;
+  background-color: #0f0000;
+  cursor: pointer;
+`
 
 const Header = () => {
+	const navigate = useNavigate();
+	const [showLogoutPopUp, setShowLogoutPopUp] = useState(false);
 
 	return (
 		<View>
@@ -56,7 +76,20 @@ const Header = () => {
 					src={Istatic.iconUrl('notifications')}
 					alt='notifications'
 				/>
-				<ProfileImg src={Istatic.staticPath('imgs/defaultProfile/profile_default_blue.png')} alt='profile image'/>
+				<ProfileImg
+					activeLogoutPopUp={showLogoutPopUp}
+					onClick={()=> setShowLogoutPopUp(status => !status)}
+					src={Istatic.staticPath('imgs/defaultProfile/profile_default_blue.png')}
+					alt='profile image'
+				/>
+				<LogOutBtn
+					onClick={()=> {
+						DataStorage.delToken();
+						navigate('/');
+					}}
+					show={showLogoutPopUp}>
+					Log out
+				</LogOutBtn>
 			</RightSide>
 		</View>
 	);

@@ -66,7 +66,6 @@ const ErrorLog = Styled.h1`
 
 const SignUpForm = () => {
 	const {
-		passwordForm,
 		signUpSchema,
 		onSubmit,
 		requestFailed,
@@ -80,7 +79,7 @@ const SignUpForm = () => {
     formState: { errors },
   } = useForm({
     defaultValues: {
-    	email: '',
+    	mail: '',
     	password: '',
     	rePassword: ''
     },
@@ -110,7 +109,6 @@ const SignUpForm = () => {
 						id='input:password'
 						type='password'
 						{...register('password')}
-						onChange={e => passwordForm.setPassword(e.target.value)}
 					/>
 					{errors?.password?.message && <InputError errMsg={errors.password.message}/>}
 				</InputField>
@@ -120,7 +118,6 @@ const SignUpForm = () => {
 						id='input:password'
 						type='password'
 						{...register('rePassword')}
-						onChange={e => passwordForm.setRePassword(e.target.value)}
 					/>
 					{errors?.rePassword?.message && <InputError errMsg={errors.rePassword.message}/>}
 				</InputField>

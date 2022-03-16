@@ -15,6 +15,7 @@ const createAccount = async (req, res) => {
 
 	const { newUser=null, deviceData=null } = req.body;
 	if (!newUser || !newUser.rePassword) {
+		console.error('invalid form');
 		res.status(403).json({ msg: 'invalid form!' });
 		return;
 	};
@@ -22,6 +23,7 @@ const createAccount = async (req, res) => {
 
 	const hasError = await validator(userData);
 	if (hasError) {
+		console.error('account was denied');
 		res.status(401).json({msg: 'account was denied'});
 		return;
 	};
